@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Colorful Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            color: pink;
+        }
+
+        .calculator {
+            display: inline-block;
+            background-color: green;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            width: 400px;
+            margin: 20px;
+        }
+
+        #themeButtons {
+            margin-bottom: 10px;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        .theme-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .light {
+            background-color: aqua;
+            color: #333;
+        }
+
+        .light .theme-button {
+            background-color: grey;
+            color: #fdff00;
+        }
+
+        .dark {
+            background-color: purple;
+            color: #354a21;
+        }
+
+        .dark .theme-button {
+            background-color: tan;
+            color: #03c04a;
+        }
+
+        .retro {
+            background-color: teal;
+            color: #ff033e;
+        }
+
+        .retro .theme-button {
+            background-color: red;
+            color: #ffcc00;
+        }
+
+        .colorful {
+            background-color: pink;
+            color:#b90e0a ;
+        }
+
+        .colorful .theme-button {
+            background-color:green;
+            color: #f25278;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator light">
+        <div id="themeButtons">
+            <button class="theme-button" onclick="setTheme('light')">Light</button>
+            <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+            <button class="theme-button" onclick="setTheme('retro')">Retro</button>
+            <button class="theme-button" onclick="setTheme('colorful')">Colorful</button>
+        </div>
+        <div id="result" style="font-size: 32px;">0</div>
+        <div class="calculator-buttons">
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button onclick="clearResult()">C</button>
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button onclick="setOperation('+')">+</button>
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="setOperation('-')">-</button>
+            <button onclick="appendNumber('0')">0</button>
+            <button onclick="appendDecimal('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="setOperation('*')">*</button>
+            <button onclick="setOperation('/')">/</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTheme = 'Dark';
+        let result = '0';
+        let currentInput = '';
+        let currentOperator = null;
+
+        function setTheme(theme) {
+            document.querySelector('.calculator').classList.remove(currentTheme);
+            currentTheme = theme;
+            document.querySelector('.calculator').classList.add(currentTheme);
+        }
+
+        function updateDisplay() {
+            document.getElementById('result').innerText = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' || currentInput === result) {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function appendDecimal() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                updateDisplay();
+            }
+        }
+
+        function setOperation(operator) {
+            if (currentOperator !== null) {
+                calculate();
+            }
+            result = currentInput;
+            currentOperator = operator;
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function clearResult() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (currentOperator === '+') {
+                currentInput = (parseFloat(result) + parseFloat(currentInput)).toString();
+            } else if (currentOperator === '-') {
+                currentInput = (parseFloat(result) - parseFloat(currentInput)).toString();
+            } else if (currentOperator === '*') {
+                currentInput = (parseFloat(result) * parseFloat(currentInput)).toString();
+            } else if (currentOperator === '/') {
+                currentInput = (parseFloat(result) / parseFloat(currentInput)).toString();
+            }
+            currentOperator = null;
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
